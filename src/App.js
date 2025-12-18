@@ -68,10 +68,12 @@ const AppInit = ({ children }) => {
   return children;
 };
 function App() {
+  const basename = process.env.NODE_ENV === 'production' ? '/cag-admin-dashboard' : '/';
+
   return (
     <Provider store={store}>
       <AppInit>
-        <Router>
+        <Router basename={basename}>
           <Routes>
             {/* Home Page */}
             <Route path="/" element={<HomePage />} />
