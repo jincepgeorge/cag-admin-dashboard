@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.css": "/cag-admin-dashboard/static/css/main.7e7fa589.css",
-    "main.js": "/cag-admin-dashboard/static/js/main.d10091b3.js",
+    "main.css": "/cag-admin-dashboard/static/css/main.bc312f34.css",
+    "main.js": "/cag-admin-dashboard/static/js/main.6e05c809.js",
     "static/js/453.b2b6d3e0.chunk.js": "/cag-admin-dashboard/static/js/453.b2b6d3e0.chunk.js",
+    "static/media/church-group.jpg": "/cag-admin-dashboard/static/media/church-group.4f01b982bee37063c0ea.jpg",
     "static/media/pastor-jobin.png": "/cag-admin-dashboard/static/media/pastor-jobin.72d5498aef042e514da5.png",
-    "static/media/cag-logo.png": "/cag-admin-dashboard/static/media/cag-logo.c59cfe4a301953a70998.png",
+    "static/media/cag-logo.png": "/cag-admin-dashboard/static/media/cag-logo.a24ac5af93b74e872167.png",
     "index.html": "/cag-admin-dashboard/index.html",
-    "main.7e7fa589.css.map": "/cag-admin-dashboard/static/css/main.7e7fa589.css.map",
-    "main.d10091b3.js.map": "/cag-admin-dashboard/static/js/main.d10091b3.js.map",
+    "main.bc312f34.css.map": "/cag-admin-dashboard/static/css/main.bc312f34.css.map",
+    "main.6e05c809.js.map": "/cag-admin-dashboard/static/js/main.6e05c809.js.map",
     "453.b2b6d3e0.chunk.js.map": "/cag-admin-dashboard/static/js/453.b2b6d3e0.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7e7fa589.css",
-    "static/js/main.d10091b3.js"
+    "static/css/main.bc312f34.css",
+    "static/js/main.6e05c809.js"
   ]
 }
