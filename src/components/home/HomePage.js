@@ -290,7 +290,7 @@ const HomePage = () => {
               <div className="testimonial-quote">"</div>
               <p>This church has been a blessing to our family. The loving community and powerful worship have strengthened our faith journey.</p>
               <div className="testimonial-author">
-                <strong>Sarah Thomas</strong>
+                <strong>Br Leji</strong>
                 <span>Member since 2018</span>
               </div>
             </div>
@@ -298,7 +298,7 @@ const HomePage = () => {
               <div className="testimonial-quote">"</div>
               <p>The youth ministry changed my life! I found true friends and discovered my calling to serve God through this wonderful church family.</p>
               <div className="testimonial-author">
-                <strong>John Mathew</strong>
+                <strong>Br Enos</strong>
                 <span>Youth Ministry</span>
               </div>
             </div>
@@ -306,7 +306,7 @@ const HomePage = () => {
               <div className="testimonial-quote">"</div>
               <p>The biblical teaching and genuine fellowship here have helped me grow spiritually. This is truly a Christ-centered community.</p>
               <div className="testimonial-author">
-                <strong>Mary Joseph</strong>
+                <strong>Sis Shruthy</strong>
                 <span>Member since 2015</span>
               </div>
             </div>
