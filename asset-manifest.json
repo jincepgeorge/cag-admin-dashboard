@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/christ-ag-kazhakkuttom/static/css/main.763fd1f6.css",
-    "main.js": "/christ-ag-kazhakkuttom/static/js/main.94a6990c.js",
-    "static/js/453.b2b6d3e0.chunk.js": "/christ-ag-kazhakkuttom/static/js/453.b2b6d3e0.chunk.js",
-    "static/media/church-group.jpg": "/christ-ag-kazhakkuttom/static/media/church-group.8e64cbdb472cf750880a.jpg",
-    "static/media/pastor-jobin.png": "/christ-ag-kazhakkuttom/static/media/pastor-jobin.72d5498aef042e514da5.png",
-    "static/media/cag-logo.png": "/christ-ag-kazhakkuttom/static/media/cag-logo.a24ac5af93b74e872167.png",
-    "index.html": "/christ-ag-kazhakkuttom/index.html",
-    "main.763fd1f6.css.map": "/christ-ag-kazhakkuttom/static/css/main.763fd1f6.css.map",
-    "main.94a6990c.js.map": "/christ-ag-kazhakkuttom/static/js/main.94a6990c.js.map",
-    "453.b2b6d3e0.chunk.js.map": "/christ-ag-kazhakkuttom/static/js/453.b2b6d3e0.chunk.js.map"
+    "main.css": "/cag-admin-dashboard/static/css/main.df9cc6af.css",
+    "main.js": "/cag-admin-dashboard/static/js/main.881d1d58.js",
+    "static/js/453.b2b6d3e0.chunk.js": "/cag-admin-dashboard/static/js/453.b2b6d3e0.chunk.js",
+    "static/media/church-group.jpg": "/cag-admin-dashboard/static/media/church-group.8e64cbdb472cf750880a.jpg",
+    "static/media/pastor-jobin.png": "/cag-admin-dashboard/static/media/pastor-jobin.72d5498aef042e514da5.png",
+    "static/media/cag-logo.png": "/cag-admin-dashboard/static/media/cag-logo.a24ac5af93b74e872167.png",
+    "index.html": "/cag-admin-dashboard/index.html",
+    "main.df9cc6af.css.map": "/cag-admin-dashboard/static/css/main.df9cc6af.css.map",
+    "main.881d1d58.js.map": "/cag-admin-dashboard/static/js/main.881d1d58.js.map",
+    "453.b2b6d3e0.chunk.js.map": "/cag-admin-dashboard/static/js/453.b2b6d3e0.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.763fd1f6.css",
-    "static/js/main.94a6990c.js"
+    "static/css/main.df9cc6af.css",
+    "static/js/main.881d1d58.js"
   ]
 }
