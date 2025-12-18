@@ -95,12 +95,10 @@ const MemberPortalLogin = () => {
             <button type="button" className="link-button" onClick={() => navigate('/login')}>
               Admin Login
             </button>
-          </div>
-
-          <div className="demo-credentials">
-            <p><strong>Demo Credentials:</strong></p>
-            <p>Username: Any username</p>
-            <p>Password: member123</p>
+            <button type="button" className="home-link-button" onClick={() => navigate('/')}>
+              <span className="home-icon">🏠</span>
+              Back to Home
+            </button>
           </div>
         </form>
       </div>

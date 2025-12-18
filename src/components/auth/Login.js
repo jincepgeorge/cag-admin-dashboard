@@ -111,12 +111,10 @@ const Login = () => {
                 Register here
               </Link>
             </p>
-          </div>
-
-          <div className="demo-credentials">
-            <p><strong>Demo Credentials:</strong></p>
-            <p>Email: admin@christag.com</p>
-            <p>Password: admin123</p>
+            <Link to="/" className="home-link">
+              <span className="home-icon">🏠</span>
+              Back to Home
+            </Link>
           </div>
         </form>
       </div>
