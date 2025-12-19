@@ -23,6 +23,7 @@ import Events from './components/events/Events';
 import Donations from './components/donations/Donations';
 import Settings from './components/settings/Settings';
 import UserManagement from './components/users/UserManagement';
+import ResourcesManager from './components/resources/ResourcesManager';
 import ArticleDetailPage from './components/articles/ArticleDetailPage';
 
 // Member Portal Components
@@ -145,6 +146,14 @@ function App() {
                 element={
                   <RoleGuard allowedRoles={['admin']}>
                     <UserManagement />
+                  </RoleGuard>
+                } 
+              />
+              <Route 
+                path="resources" 
+                element={
+                  <RoleGuard allowedRoles={['admin', 'resource_manager']}>
+                    <ResourcesManager />
                   </RoleGuard>
                 } 
               />

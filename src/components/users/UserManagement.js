@@ -18,6 +18,7 @@ const UserManagement = () => {
     { value: 'admin', label: 'Admin', description: 'Full system access' },
     { value: 'events_manager', label: 'Events Manager', description: 'Manage events and notifications' },
     { value: 'finance_manager', label: 'Finance Manager', description: 'Manage donations and finances' },
+    { value: 'resource_manager', label: 'Resource Manager', description: 'Manage articles and resources' },
     { value: 'user', label: 'User', description: 'Basic access' },
   ];
 
@@ -66,6 +67,7 @@ const UserManagement = () => {
       case 'admin': return 'badge-admin';
       case 'events_manager': return 'badge-events';
       case 'finance_manager': return 'badge-finance';
+      case 'resource_manager': return 'badge-resources';
       default: return 'badge-user';
     }
   };

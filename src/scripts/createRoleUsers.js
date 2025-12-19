@@ -45,6 +45,12 @@ const users = [
     name: 'Finance Manager',
     role: 'finance_manager',
   },
+  {
+    email: 'resource@christag.com',
+    password: 'resource123',
+    name: 'Resource Manager',
+    role: 'resource_manager',
+  },
 ];
 
 async function createUser(userData) {
@@ -108,6 +114,10 @@ async function createAllUsers() {
   console.log('3. FINANCE MANAGER (Donations & Finances):');
   console.log('   Email: finance@christag.com');
   console.log('   Password: finance123\n');
+
+  console.log('4. RESOURCE MANAGER (Articles & Resources):');
+  console.log('   Email: resource@christag.com');
+  console.log('   Password: resource123\n');
 
   process.exit(0);
 }
