@@ -166,12 +166,31 @@ const getUpcomingEvents = async () => {
     );
     
     const querySnapshot = await getDocs(q);
-    
-    return querySnapshot.docs.map(doc => ({
+    const mapped = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
       date: doc.data().date?.toDate?.()?.toISOString() || doc.data().date,
     }));
+
+    // If no results, fallback to fetching all events and filter client-side.
+    // This handles cases where `date` was stored as a string (type mismatch with Timestamp queries).
+    if (!mapped.length) {
+      try {
+        console.warn('No upcoming events from Timestamp query — falling back to client-side filter');
+        const all = await getEvents();
+        const nowDate = new Date();
+        const fallback = all.filter(e => {
+          const d = new Date(e.date);
+          return !isNaN(d) && d >= nowDate;
+        }).sort((a, b) => new Date(a.date) - new Date(b.date));
+        return fallback;
+      } catch (fbErr) {
+        console.error('Fallback fetch failed:', fbErr);
+        // still return the empty mapped array
+      }
+    }
+
+    return mapped;
   } catch (error) {
     console.error('Error fetching upcoming events:', error);
     throw error;

@@ -12,6 +12,7 @@ const EventModal = ({ event, onClose, onSuccess }) => {
     time: '',
     location: '',
     type: 'worship',
+    zoomLink: '',
     isRecurring: false,
     recurringPattern: 'weekly',
     recurringEndDate: '',
@@ -143,6 +144,16 @@ const EventModal = ({ event, onClose, onSuccess }) => {
                 <option value="special">Special</option>
               </select>
             </div>
+          </div>
+          <div className="form-group">
+            <label>Zoom Link (Optional)</label>
+            <input 
+              type="url" 
+              placeholder="https://zoom.us/j/your-meeting-id" 
+              value={formData.zoomLink} 
+              onChange={(e) => setFormData({...formData, zoomLink: e.target.value})} 
+            />
+            <small style={{color: '#718096', marginTop: '4px', display: 'block'}}>Enter the Zoom meeting link if this event will be held online</small>
           </div>
           
           {!event && (

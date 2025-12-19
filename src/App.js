@@ -23,6 +23,7 @@ import Events from './components/events/Events';
 import Donations from './components/donations/Donations';
 import Settings from './components/settings/Settings';
 import UserManagement from './components/users/UserManagement';
+import ArticleDetailPage from './components/articles/ArticleDetailPage';
 
 // Member Portal Components
 import MemberPortalLogin from './components/member-portal/MemberPortalLogin';
@@ -77,6 +78,9 @@ function App() {
           <Routes>
             {/* Home Page */}
             <Route path="/" element={<HomePage />} />
+            
+            {/* Article Detail Page */}
+            <Route path="/article/:id" element={<ArticleDetailPage />} />
 
             {/* Admin Public Routes */}
             <Route path="/login" element={<Login />} />

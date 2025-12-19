@@ -2,14 +2,76 @@
  * Christ AG Kazhakkuttom Home Page Component
  */
 
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import churchLogo from '../../assets/cag-logo.png';
 import pastorImage from '../../assets/pastor-jobin.png';
 import './HomePage.css';
+import { getAllEvents } from '../../services/eventService.firebase';
+import { getAllArticles } from '../../services/articlesService.firebase';
+
+// Mock articles for demonstration
+const MOCK_ARTICLES = [
+  {
+    id: 'mock-1',
+    title: 'The Power of Daily Prayer',
+    excerpt: 'Discover how establishing a daily prayer routine can transform your spiritual life and deepen your connection with God.',
+    description: 'Prayer is the foundation of our faith. Learn practical tips for maintaining a meaningful prayer practice that brings you closer to God\'s love and purpose.',
+    category: 'Prayer',
+    author: 'Pastor Jobin Elisha',
+    imageUrl: 'https://picsum.photos/400/250?random=1',
+    link: '#',
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'mock-2',
+    title: 'Finding Faith in Times of Uncertainty',
+    excerpt: 'When life feels overwhelming, how can we maintain our faith and trust in God\'s plan? Explore biblical wisdom and practical guidance.',
+    description: 'Faith is not about having all the answers. It\'s about trusting God even when we don\'t understand the journey. Discover how to strengthen your faith during challenging times.',
+    category: 'Faith',
+    author: 'Sister Maria',
+    imageUrl: 'https://picsum.photos/400/250?random=2',
+    link: '#',
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'mock-3',
+    title: 'Living a Life of Gratitude',
+    excerpt: 'Gratitude is a powerful spiritual practice that transforms our perspective. Learn how thanksgiving can deepen your faith journey.',
+    description: 'A grateful heart opens doors to blessings we often overlook. Explore how to cultivate gratitude in your daily life and experience the peace that comes from appreciating God\'s goodness.',
+    category: 'Faith',
+    author: 'Brother James',
+    imageUrl: 'https://picsum.photos/400/250?random=3',
+    link: '#',
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+];
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [weeklyEvents, setWeeklyEvents] = useState([]);
+  const [articles, setArticles] = useState(MOCK_ARTICLES);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Scroll to resources section if coming from article detail page
+  useEffect(() => {
+    if (location.state?.scrollToResources) {
+      // Use a longer timeout to ensure the DOM is fully rendered
+      const scrollTimeout = setTimeout(() => {
+        const resourcesContent = document.querySelector('.resources-content h2');
+        if (resourcesContent) {
+          window.scrollTo({
+            top: resourcesContent.offsetTop - 100,
+            behavior: 'smooth'
+          });
+        }
+      }, 300);
+      
+      return () => clearTimeout(scrollTimeout);
+    }
+  }, [location]);
 
   // Intersection Observer for scroll animations
   useEffect(() => {
@@ -31,6 +93,63 @@ const HomePage = () => {
     elements.forEach(el => observer.observe(el));
 
     return () => observer.disconnect();
+  }, []);
+
+  // Load weekly events (Monday to Saturday of current week) from Firebase
+  useEffect(() => {
+    let mounted = true;
+    const loadWeekly = async () => {
+      try {
+        const allEvents = await getAllEvents();
+        const now = new Date();
+        
+        // Calculate Monday of the current week
+        const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+        const monday = new Date(now);
+        monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+        monday.setHours(0, 0, 0, 0);
+        
+        // Calculate Saturday of the current week
+        const saturday = new Date(monday);
+        saturday.setDate(monday.getDate() + 5);
+        saturday.setHours(23, 59, 59, 999);
+
+        const weekEvents = allEvents
+          .filter(e => {
+            const d = new Date(e.date);
+            return d >= monday && d <= saturday;
+          })
+          .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        if (mounted) setWeeklyEvents(weekEvents);
+      } catch (err) {
+        console.error('Failed to load weekly events', err);
+      }
+    };
+
+    loadWeekly();
+    return () => { mounted = false; };
+  }, []);
+
+  // Load articles from Firebase
+  useEffect(() => {
+    let mounted = true;
+    const loadArticles = async () => {
+      try {
+        const allArticles = await getAllArticles();
+        // Merge Firebase articles with mock articles (if any real articles exist, use them; otherwise use mock)
+        const articlesToShow = allArticles.length > 0 ? allArticles : MOCK_ARTICLES;
+        // Get the 3 most recent articles for homepage
+        const recentArticles = articlesToShow.slice(0, 3);
+        if (mounted) setArticles(recentArticles);
+      } catch (err) {
+        console.error('Failed to load articles', err);
+        // Keep mock articles as fallback
+      }
+    };
+
+    loadArticles();
+    return () => { mounted = false; };
   }, []);
 
   // Scroll to top button visibility and parallax effect
@@ -94,7 +213,7 @@ const HomePage = () => {
           <div className="info-item">
             <div className="info-icon">👥</div>
             <div className="info-text">
-              <h4>500+</h4>
+              <h4>200+</h4>
               <p>Active Members</p>
             </div>
           </div>
@@ -239,6 +358,54 @@ const HomePage = () => {
               </div>
             </div>
           </div>
+          {weeklyEvents.length > 0 && (
+            <div className="this-week-section">
+              <h3>📅 This Week's Events</h3>
+              <div className="week-events-list">
+                {weeklyEvents.map(e => {
+                  const eventDate = new Date(e.date);
+                  const today = new Date();
+                  const isToday = today.toDateString() === eventDate.toDateString();
+                  const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][eventDate.getDay()];
+                  
+                  return (
+                    <div 
+                      key={e.id} 
+                      className={`week-event-card ${isToday ? 'today' : ''}`}
+                      onClick={() => {
+                        setSelectedEvent(e);
+                        setIsModalOpen(true);
+                      }}
+                    >
+                      <div className="event-date-badge">
+                        <span className="day">{eventDate.getDate()}</span>
+                        <span className="month">{eventDate.toLocaleDateString('en-US', { month: 'short' })}</span>
+                        <span className="weekday">{dayName}</span>
+                      </div>
+                      <div className="event-details">
+                        <h4 className="event-title">{e.title}</h4>
+                        {e.description && <p className="event-description">{e.description}</p>}
+                        <div className="event-meta-info">
+                          {e.time && (
+                            <span className="meta-item">
+                              <span className="icon">🕐</span>
+                              {e.time}
+                            </span>
+                          )}
+                          {e.location && (
+                            <span className="meta-item">
+                              <span className="icon">📍</span>
+                              {e.location}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -314,6 +481,57 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Resources Section */}
+      <section className="resources-section">
+        <div className="resources-content">
+          <h2>📚 Resources & Articles</h2>
+          <p className="section-subtitle">Spiritual growth and learning materials for our community</p>
+          
+          {articles.length === 0 ? (
+            <div className="no-articles">
+              <p>No articles available at the moment. Check back soon!</p>
+            </div>
+          ) : (
+            <div className="articles-grid">
+              {articles.map(article => (
+                <div key={article.id} className="article-card">
+                  {article.imageUrl && (
+                    <div className="article-image">
+                      <img 
+                        src={article.imageUrl} 
+                        alt={article.title}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div className="article-content">
+                    <div className="article-meta">
+                      <span className="article-category">{article.category || 'General'}</span>
+                      <span className="article-date">
+                        {new Date(article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </span>
+                    </div>
+                    <h3 className="article-title">{article.title}</h3>
+                    <p className="article-excerpt">{article.excerpt || article.description}</p>
+                    {article.author && (
+                      <p className="article-author">By {article.author}</p>
+                    )}
+                    <button 
+                      className="read-more-btn"
+                      onClick={() => navigate(`/article/${article.id}`)}
+                    >
+                      Read More →
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section className="contact-section">
         <div className="contact-content">
@@ -331,9 +549,9 @@ const HomePage = () => {
               <div className="contact-icon">📞</div>
               <h4>Phone</h4>
               <p>
-                <a href="tel:+919847998584" className="phone-link">+91 9847998584</a>
+                <a href="tel:+918590525909" className="phone-link">+91 85905 25909</a>
                 <br/>
-                <a href="https://wa.me/919847998584" target="_blank" rel="noopener noreferrer" className="whatsapp-link">
+                <a href="https://wa.me/918590525909" target="_blank" rel="noopener noreferrer" className="whatsapp-link">
                   💬 WhatsApp Us
                 </a>
                 <br/>Office Hours:<br/>Mon-Sat: 9 AM - 5 PM
@@ -406,6 +624,64 @@ const HomePage = () => {
       <button className="scroll-to-top" onClick={scrollToTop} aria-label="Scroll to top">
         <span>↑</span>
       </button>
+
+      {/* Event Details Modal */}
+      {isModalOpen && selectedEvent && (
+        <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={() => setIsModalOpen(false)}>✕</button>
+            
+            <div className="modal-header">
+              <h2>{selectedEvent.title}</h2>
+            </div>
+
+            <div className="modal-body">
+              <div className="modal-section">
+                <h3>📅 Date & Time</h3>
+                <p>{new Date(selectedEvent.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                {selectedEvent.time && <p><strong>Time:</strong> {selectedEvent.time}</p>}
+              </div>
+
+              {selectedEvent.location && (
+                <div className="modal-section">
+                  <h3>📍 Location</h3>
+                  <p>{selectedEvent.location}</p>
+                </div>
+              )}
+
+              {selectedEvent.description && (
+                <div className="modal-section">
+                  <h3>📝 Description</h3>
+                  <p>{selectedEvent.description}</p>
+                </div>
+              )}
+
+              {selectedEvent.zoomLink && (
+                <div className="modal-section">
+                  <h3>🎥 Join Online</h3>
+                  <p>Zoom Meeting Available</p>
+                  <button 
+                    className="zoom-button"
+                    onClick={() => {
+                      if (selectedEvent.zoomLink.startsWith('http')) {
+                        window.open(selectedEvent.zoomLink, '_blank');
+                      } else {
+                        window.location.href = selectedEvent.zoomLink;
+                      }
+                    }}
+                  >
+                    🔗 Join Zoom
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="modal-footer">
+              <button className="modal-btn-close" onClick={() => setIsModalOpen(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
