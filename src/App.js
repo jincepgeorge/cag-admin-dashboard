@@ -25,6 +25,8 @@ import Settings from './components/settings/Settings';
 import UserManagement from './components/users/UserManagement';
 import ResourcesManager from './components/resources/ResourcesManager';
 import ArticleDetailPage from './components/articles/ArticleDetailPage';
+import TestimonialsManagement from './components/testimonials/TestimonialsManagement';
+import TestimonialForm from './components/testimonials/TestimonialForm';
 
 // Member Portal Components
 import MemberPortalLogin from './components/member-portal/MemberPortalLogin';
@@ -154,6 +156,30 @@ function App() {
                 element={
                   <RoleGuard allowedRoles={['admin', 'resource_manager']}>
                     <ResourcesManager />
+                  </RoleGuard>
+                } 
+              />
+              <Route 
+                path="testimonials" 
+                element={
+                  <RoleGuard allowedRoles={['admin', 'content_manager']}>
+                    <TestimonialsManagement />
+                  </RoleGuard>
+                } 
+              />
+              <Route 
+                path="testimonials/new" 
+                element={
+                  <RoleGuard allowedRoles={['admin', 'content_manager']}>
+                    <TestimonialForm />
+                  </RoleGuard>
+                } 
+              />
+              <Route 
+                path="testimonials/:id" 
+                element={
+                  <RoleGuard allowedRoles={['admin', 'content_manager']}>
+                    <TestimonialForm />
                   </RoleGuard>
                 } 
               />

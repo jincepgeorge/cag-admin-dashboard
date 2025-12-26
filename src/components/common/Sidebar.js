@@ -22,6 +22,7 @@ const Sidebar = ({ isOpen, onItemClick }) => {
     { path: '/admin/events', icon: '📅', label: 'Events', roles: ['admin', 'events_manager'] },
     { path: '/admin/donations', icon: '💰', label: 'Donations', roles: ['admin', 'finance_manager'] },
     { path: '/admin/resources', icon: '📚', label: 'Resources', roles: ['admin', 'resource_manager'] },
+    { path: '/admin/testimonials', icon: '💬', label: 'Testimonials', roles: ['admin', 'content_manager'] },
     { path: '/admin/notifications', icon: '🔔', label: 'Notifications', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager'] },
     { path: '/admin/users', icon: '👤', label: 'User Management', roles: ['admin'] },
     { path: '/admin/settings', icon: '⚙️', label: 'Settings', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager'] },

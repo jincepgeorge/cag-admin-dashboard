@@ -6,9 +6,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import churchLogo from '../../assets/cag-logo.png';
 import pastorImage from '../../assets/pastor-jobin.png';
+import churchGroupImage from '../../assets/church-group.jpg';
 import './HomePage.css';
 import { getAllEvents } from '../../services/eventService.firebase';
 import { getAllArticles } from '../../services/articlesService.firebase';
+import { getAllTestimonials } from '../../services/testimonialService.firebase';
 
 // Mock articles for demonstration
 const MOCK_ARTICLES = [
@@ -47,13 +49,41 @@ const MOCK_ARTICLES = [
   },
 ];
 
+// Mock testimonials for demonstration
+const MOCK_TESTIMONIALS = [
+  {
+    id: 'mock-1',
+    name: 'Br Leji',
+    role: 'Member since 2018',
+    content: 'This church has been a blessing to our family. The loving community and powerful worship have strengthened our faith journey.',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'mock-2',
+    name: 'Br Enos',
+    role: 'Youth Ministry',
+    content: 'The youth ministry changed my life! I found true friends and discovered my calling to serve God through this wonderful church family.',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'mock-3',
+    name: 'Sis Shruthy',
+    role: 'Member since 2015',
+    content: 'The biblical teaching and genuine fellowship here have helped me grow spiritually. This is truly a Christ-centered community.',
+    createdAt: new Date().toISOString(),
+  },
+];
+
 const HomePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [weeklyEvents, setWeeklyEvents] = useState([]);
   const [articles, setArticles] = useState(MOCK_ARTICLES);
+  const [testimonials, setTestimonials] = useState(MOCK_TESTIMONIALS);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
   // Scroll to resources section if coming from article detail page
   useEffect(() => {
@@ -93,7 +123,7 @@ const HomePage = () => {
     elements.forEach(el => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [testimonials]); // Added testimonials dependency so observer updates when testimonials load
 
   // Load weekly events (Monday to Saturday of current week) from Firebase
   useEffect(() => {
@@ -151,6 +181,55 @@ const HomePage = () => {
     loadArticles();
     return () => { mounted = false; };
   }, []);
+
+  // Load testimonials from Firebase
+  useEffect(() => {
+    let mounted = true;
+    const loadTestimonials = async () => {
+      try {
+        console.log('Loading testimonials from Firebase...');
+        const allTestimonials = await getAllTestimonials();
+        console.log('Testimonials loaded from Firebase:', allTestimonials);
+        console.log('Firebase testimonials count:', allTestimonials.length);
+        
+        // Merge Firebase testimonials with mock testimonials
+        let testimonialsToShow = [...MOCK_TESTIMONIALS];
+        
+        if (allTestimonials.length > 0) {
+          console.log('First Firebase testimonial structure:', allTestimonials[0]);
+          // Check if Firebase data has the required fields
+          if (allTestimonials[0].name && allTestimonials[0].role && allTestimonials[0].content) {
+            console.log('Firebase data structure is valid, merging with mock testimonials');
+            // Merge Firebase testimonials with mock (Firebase first, then mock)
+            testimonialsToShow = [...allTestimonials, ...MOCK_TESTIMONIALS];
+          } else {
+            console.warn('Firebase testimonial missing required fields, using mock only');
+          }
+        } else {
+          console.log('Firebase collection is empty, using mock testimonials only');
+        }
+        
+        console.log('Total testimonials to display:', testimonialsToShow.length);
+        if (mounted) {
+          setTestimonials(testimonialsToShow);
+          console.log('Set testimonials (merged):', testimonialsToShow);
+        }
+      } catch (err) {
+        console.error('Failed to load testimonials from Firebase:', err);
+        console.log('Using mock testimonials only');
+        // Keep mock testimonials as fallback
+        if (mounted) setTestimonials(MOCK_TESTIMONIALS);
+      }
+    };
+
+    loadTestimonials();
+    return () => { mounted = false; };
+  }, []);
+
+  // Log testimonials state changes for debugging
+  useEffect(() => {
+    console.log('Testimonials state updated:', testimonials);
+  }, [testimonials]);
 
   // Scroll to top button visibility and parallax effect
   useEffect(() => {
@@ -452,31 +531,64 @@ const HomePage = () => {
       <section className="testimonials-section">
         <div className="testimonials-content">
           <h2>Life Transformations</h2>
-          <div className="testimonials-grid">
-            <div className="testimonial-card">
-              <div className="testimonial-quote">"</div>
-              <p>This church has been a blessing to our family. The loving community and powerful worship have strengthened our faith journey.</p>
-              <div className="testimonial-author">
-                <strong>Br Leji</strong>
-                <span>Member since 2018</span>
-              </div>
+          {testimonials.length === 0 ? (
+            <div className="no-testimonials">
+              <p>No testimonials available at the moment. Check back soon!</p>
             </div>
-            <div className="testimonial-card">
-              <div className="testimonial-quote">"</div>
-              <p>The youth ministry changed my life! I found true friends and discovered my calling to serve God through this wonderful church family.</p>
-              <div className="testimonial-author">
-                <strong>Br Enos</strong>
-                <span>Youth Ministry</span>
-              </div>
+          ) : (
+            <div className="testimonials-grid">
+              {testimonials.map(testimonial => (
+                <div key={testimonial.id} className="testimonial-card">
+                  <div className="testimonial-quote">"</div>
+                  <p>{testimonial.content}</p>
+                  <div className="testimonial-author">
+                    <strong>{testimonial.name}</strong>
+                    <span>{testimonial.role}</span>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="testimonial-card">
-              <div className="testimonial-quote">"</div>
-              <p>The biblical teaching and genuine fellowship here have helped me grow spiritually. This is truly a Christ-centered community.</p>
-              <div className="testimonial-author">
-                <strong>Sis Shruthy</strong>
-                <span>Member since 2015</span>
+          )}
+        </div>
+      </section>
+
+      {/* Gallery Section */}
+      <section className="gallery-section">
+        <div className="gallery-content">
+          <h2>📸 Church Photo Gallery</h2>
+          <p className="section-subtitle">Moments of worship, fellowship, and service in our community</p>
+          <div className="gallery-grid">
+            {[
+              { id: 1, title: 'Sunday Worship Service', url: churchGroupImage },
+              { id: 2, title: 'Youth Ministry Gathering', url: churchGroupImage },
+              { id: 3, title: 'Community Outreach', url: churchGroupImage },
+              { id: 4, title: 'Children Ministry Activities', url: churchGroupImage },
+              { id: 5, title: 'Prayer Meeting', url: churchGroupImage },
+              { id: 6, title: 'Worship Band Performance', url: churchGroupImage },
+              { id: 7, title: 'Family Fellowship Event', url: churchGroupImage },
+              { id: 8, title: 'Special Celebration', url: churchGroupImage },
+            ].map(photo => (
+              <div 
+                key={photo.id} 
+                className="gallery-item"
+                onClick={() => {
+                  setSelectedPhoto(photo);
+                  setIsPhotoModalOpen(true);
+                }}
+              >
+                <img 
+                  src={photo.url} 
+                  alt={photo.title}
+                  className="gallery-image"
+                />
+                <div className="gallery-overlay">
+                  <div className="gallery-info">
+                    <h4>{photo.title}</h4>
+                    <p className="view-text">Click to view</p>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -678,6 +790,25 @@ const HomePage = () => {
 
             <div className="modal-footer">
               <button className="modal-btn-close" onClick={() => setIsModalOpen(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Photo Lightbox Modal */}
+      {isPhotoModalOpen && selectedPhoto && (
+        <div className="photo-modal-overlay" onClick={() => setIsPhotoModalOpen(false)}>
+          <div className="photo-modal-content" onClick={e => e.stopPropagation()}>
+            <button className="photo-modal-close-btn" onClick={() => setIsPhotoModalOpen(false)}>✕</button>
+            <div className="photo-modal-body">
+              <img 
+                src={selectedPhoto.url} 
+                alt={selectedPhoto.title}
+                className="photo-modal-image"
+              />
+              <div className="photo-modal-info">
+                <h3>{selectedPhoto.title}</h3>
+              </div>
             </div>
           </div>
         </div>
