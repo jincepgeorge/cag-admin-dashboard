@@ -7,6 +7,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import churchLogo from '../../assets/cag-logo.png';
 import pastorImage from '../../assets/pastor-jobin.png';
 import churchGroupImage from '../../assets/church-group.jpg';
+import gallery1 from '../../assets/gallery1.jpg';
+import gallery2 from '../../assets/gallery2.jpg';
+import gallery3 from '../../assets/gallery3.jpg';
+import gallery4 from '../../assets/gallery4.jpg';
 import './HomePage.css';
 import { getAllEvents } from '../../services/eventService.firebase';
 import { getAllArticles } from '../../services/articlesService.firebase';
@@ -559,14 +563,12 @@ const HomePage = () => {
           <p className="section-subtitle">Moments of worship, fellowship, and service in our community</p>
           <div className="gallery-grid">
             {[
-              { id: 1, title: 'Sunday Worship Service', url: churchGroupImage },
-              { id: 2, title: 'Youth Ministry Gathering', url: churchGroupImage },
-              { id: 3, title: 'Community Outreach', url: churchGroupImage },
-              { id: 4, title: 'Children Ministry Activities', url: churchGroupImage },
-              { id: 5, title: 'Prayer Meeting', url: churchGroupImage },
-              { id: 6, title: 'Worship Band Performance', url: churchGroupImage },
-              { id: 7, title: 'Family Fellowship Event', url: churchGroupImage },
-              { id: 8, title: 'Special Celebration', url: churchGroupImage },
+              { id: 1, title: 'Youth Camp', url: gallery1 },
+              { id: 2, title: 'Sunday Service', url: gallery2 },
+              { id: 3, title: 'Sunday Schhol', url: gallery3 },
+              { id: 4, title: 'Parenting sessions', url: gallery4 },
+              { id: 5, title: 'Church Group', url: churchGroupImage },
+            
             ].map(photo => (
               <div 
                 key={photo.id} 
