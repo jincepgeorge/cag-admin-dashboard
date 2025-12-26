@@ -15,6 +15,7 @@ import './HomePage.css';
 import { getAllEvents } from '../../services/eventService.firebase';
 import { getAllArticles } from '../../services/articlesService.firebase';
 import { getAllTestimonials } from '../../services/testimonialService.firebase';
+import { formatTo12Hour } from '../../utils/timeFormatter';
 
 // Mock articles for demonstration
 const MOCK_ARTICLES = [
@@ -443,7 +444,25 @@ const HomePage = () => {
           </div>
           {weeklyEvents.length > 0 && (
             <div className="this-week-section">
-              <h3>📅 This Week's Events</h3>
+              <div className="week-header">
+                <h3>📅 This Week's Events</h3>
+                <div className="week-duration">
+                  {(() => {
+                    const now = new Date();
+                    const day = now.getDay();
+                    const monday = new Date(now);
+                    monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+                    
+                    const saturday = new Date(monday);
+                    saturday.setDate(monday.getDate() + 5);
+                    
+                    const mondayStr = monday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    const saturdayStr = saturday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    
+                    return <p>{mondayStr} - {saturdayStr}</p>;
+                  })()}
+                </div>
+              </div>
               <div className="week-events-list">
                 {weeklyEvents.map(e => {
                   const eventDate = new Date(e.date);
@@ -472,7 +491,7 @@ const HomePage = () => {
                           {e.time && (
                             <span className="meta-item">
                               <span className="icon">🕐</span>
-                              {e.time}
+                              {formatTo12Hour(e.time)}
                             </span>
                           )}
                           {e.location && (
@@ -679,7 +698,7 @@ const HomePage = () => {
             <div className="contact-item">
               <div className="contact-icon">🌐</div>
               <h4>Connect Online</h4>
-              <p>Facebook | YouTube | Instagram<br/>Join our online community</p>
+              <p><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a> | <a href="https://www.youtube.com/@assembliesofgodkazhakootta4792" target="_blank" rel="noopener noreferrer">YouTube</a> | <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a><br/>Join our online community</p>
             </div>
           </div>
         </div>
@@ -725,7 +744,7 @@ const HomePage = () => {
             </div>
             <div className="footer-section">
               <h4>Connect With Us</h4>
-              <p className="footer-text">Facebook | Instagram<br/>YouTube | Twitter</p>
+              <p className="footer-text"><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a> | <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a><br/><a href="https://www.youtube.com/@assembliesofgodkazhakootta4792" target="_blank" rel="noopener noreferrer">YouTube</a> | <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a></p>
             </div>
           </div>
           <p className="footer-copyright">
@@ -753,7 +772,7 @@ const HomePage = () => {
               <div className="modal-section">
                 <h3>📅 Date & Time</h3>
                 <p>{new Date(selectedEvent.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                {selectedEvent.time && <p><strong>Time:</strong> {selectedEvent.time}</p>}
+                {selectedEvent.time && <p><strong>Time:</strong> {formatTo12Hour(selectedEvent.time)}</p>}
               </div>
 
               {selectedEvent.location && (
