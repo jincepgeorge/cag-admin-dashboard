@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/cag-admin-dashboard/static/css/main.c4f6c179.css",
-    "main.js": "/cag-admin-dashboard/static/js/main.dc27fe51.js",
+    "main.js": "/cag-admin-dashboard/static/js/main.c80d95ab.js",
     "static/js/453.b2b6d3e0.chunk.js": "/cag-admin-dashboard/static/js/453.b2b6d3e0.chunk.js",
     "static/media/gallery1.jpg": "/cag-admin-dashboard/static/media/gallery1.a4c8373d0032a2b36cac.jpg",
     "static/media/gallery4.jpg": "/cag-admin-dashboard/static/media/gallery4.a11e23c20a730659bb3b.jpg",
@@ -12,11 +12,11 @@
     "static/media/cag-logo.png": "/cag-admin-dashboard/static/media/cag-logo.a24ac5af93b74e872167.png",
     "index.html": "/cag-admin-dashboard/index.html",
     "main.c4f6c179.css.map": "/cag-admin-dashboard/static/css/main.c4f6c179.css.map",
-    "main.dc27fe51.js.map": "/cag-admin-dashboard/static/js/main.dc27fe51.js.map",
+    "main.c80d95ab.js.map": "/cag-admin-dashboard/static/js/main.c80d95ab.js.map",
     "453.b2b6d3e0.chunk.js.map": "/cag-admin-dashboard/static/js/453.b2b6d3e0.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c4f6c179.css",
-    "static/js/main.dc27fe51.js"
+    "static/js/main.c80d95ab.js"
   ]
 }
